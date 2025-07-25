@@ -37,7 +37,7 @@ const Footer = () => {
     return (
         <footer className="container border-t-[0.5px] border-darkGray/20 lg:px-20 px-7 mx-auto py-28 flex md:justify-between justify-center items-center flex-wrap gap-10">
             <p className="text-center text-gray-500">
-                &#169; {currentYear} <span className="underline">Lirio Clothing.</span> All rights reserved.
+                &#169; {currentYear} <span className="underline">Shop 13.</span> All rights reserved.
             </p>
             {/* social media icons */}
             <div className="flex justify-center items-center gap-3 md:w-fit w-full">

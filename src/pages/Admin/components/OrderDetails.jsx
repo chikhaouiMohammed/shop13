@@ -117,25 +117,20 @@ const OrderDetails = () => {
   }
 
   return (
-    <div className="container mx-auto md:px-20 px-4 py-6 text-darkGray">
-      <p className="font-bold w-full text-center text-xl md:text-3xl py-5">Order Details</p>
-  
-      <div className="w-full bg-gray-200 p-4 md:p-6 rounded-2xl shadow-lg">
-        <div className="mb-4 flex flex-col justify-center items-start gap-3">
-          <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-            <h3 className="text-lg md:text-2xl font-semibold">Order ID: <span className="font-medium">{id}</span></h3>
-            <h4 className="text-md md:text-lg font-semibold">Date: <span className="font-medium">{formatDateTime(orderDetails.orderDate)}</span></h4>
-          </div>
-          <h4 className="text-lg md:text-xl font-semibold">Full Name: <span className="font-medium">{orderDetails.deliveryInfo.firstName} {orderDetails.deliveryInfo.lastName}</span></h4>
-          <h4 className="text-lg md:text-xl font-semibold">Total: <span className="font-medium">{(orderDetails.totalAmount).toFixed(2)}</span></h4>
-          <h4 className="text-lg md:text-xl font-semibold">Phone Number: <span className="font-medium">{orderDetails.contactInfo.phone}</span></h4>
-          <h4 className="text-lg md:text-xl font-semibold">Email: <span className="font-medium">{orderDetails.contactInfo.email}</span></h4>
-          <h4 className="text-lg md:text-xl font-semibold">Status: 
-            <span className="font-medium">
+    <div className="container mx-auto md:px-20 px-10 py-6 text-darkGray">
+      <p className='font-bold w-full text-center text-xl md:text-3xl py-5'>Order Details</p>
+
+      <div className="w-full bg-gray-200 p-5 rounded-2xl">
+        <div className="mb-4">
+          <h3 className='text-2xl font-semibold'>Order ID: <span className='font-medium'>{id}</span></h3>
+          <h4 className='text-xl font-semibold'>Date: <span className='font-medium'>{formatDateTime(orderDetails.orderDate)}</span></h4>
+          <h4 className='text-xl font-semibold'>Total: <span className='font-medium'>{orderDetails.totalAmount}</span></h4>
+          <h4 className='text-xl font-semibold'>Status: 
+            <span className='font-medium'>
               <select
                 value={orderDetails.status}
                 onChange={(e) => handleStatusChange(e.target.value)}
-                className="ml-2 p-2 border border-gray-300 rounded-lg"
+                className="ml-2 p-1 border border-gray-300 rounded-lg"
               >
                 <option value="Pending">Pending</option>
                 <option value="Completed">Completed</option>
@@ -143,36 +138,32 @@ const OrderDetails = () => {
               </select>
             </span>
           </h4>
-          <h4 className="text-lg md:text-xl font-semibold">Shipping Address: <span className="font-medium">{orderDetails.deliveryInfo.address}</span></h4>
+          <h4 className='text-xl font-semibold'>Shipping Address: <span className='font-medium'>{orderDetails.shippingAddress}</span></h4>
         </div>
-  
-        <div className="mt-6">
-          <h3 className="text-lg md:text-xl font-semibold mb-3">Items:</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {orderDetails.cartItems.map((item, index) => (
-              <div key={index} className="relative w-[80px] sm:w-[100px] h-[80px] sm:h-[100px] flex flex-col justify-center items-center rounded-md shadow-md">
-                <h4 className="font-semibold font-poppins text-sm sm:text-xl">{item.name}</h4>
-                <div className="absolute -top-2 -right-2 bg-darkGray/70 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
-                  {item.quantity}
-                </div>
-                <img src={item.image} className="w-full h-full object-cover rounded-md" alt={item.name} />
-              </div>
-            ))}
-          </div>
+
+        <div>
+          <h3 className='text-xl font-semibold mb-3'>Items:</h3>
+          {orderDetails.cartItems.map((item, index) => (
+            <div key={index} className="mb-2">
+              <h4 className='text-lg font-semibold'>{item.name}</h4>
+              <p className='text-md'>Quantity: {item.quantity}</p>
+              <p className='text-md'>Price: {item.price}</p>
+            </div>
+          ))}
         </div>
-  
+
         {/* Action buttons */}
-        <div className="mt-6 flex flex-col md:flex-row justify-between gap-4 md:gap-0">
+        <div className="mt-6 flex justify-between">
           <button
             onClick={handleDeleteOrder}
-            className="bg-red-600 w-full md:w-auto px-6 py-2 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105"
+            className="bg-red-600 px-6 py-2 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105"
             disabled={isLoading}
           >
             {isLoading ? 'Deleting...' : 'Delete Order'}
           </button>
           <button
             onClick={handleSaveChanges}
-            className="bg-blue-950 w-full md:w-auto px-6 py-2 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105"
+            className="bg-blue-950 px-6 py-2 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105"
             disabled={isLoading}
           >
             {isLoading ? 'Saving...' : 'Save Changes'}

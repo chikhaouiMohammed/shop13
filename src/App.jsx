@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import Admin from './pages/Admin/Admin';
 import Home from './pages/Home';
 import ProductManagement from './pages/Admin/components/ProductManagement';
+import Customized from './pages/Admin/components/Customized';
 import AddProduct from './pages/Admin/components/AddProduct';
 import EditProduct from './pages/Admin/components/EditProduct';
 import OrderManagement from './pages/Admin/components/OrderManagement';
@@ -14,8 +15,11 @@ import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import ProtectedRoute from './pages/Admin/components/ProtectedRoute';
 import AdminLogin from './pages/Admin/components/AdminLogin/AdminLogin'
+import ThankYou from './pages/ThankYou';
 import ProductDetailImages from './pages/ProductDetailImages';
 import CategoriesSizes from './pages/Admin/components/CategoriesSizes';
+import Shipping from './pages/Admin/pages/Shipping';
+
 
 function App() {
   return (
@@ -36,6 +40,8 @@ function App() {
           <Route path="orders" element={<OrderManagement />} />
           <Route path="social" element={<SocialMediaManagement />} />  
           <Route path="categories-sizes" element={<CategoriesSizes />} />  
+          <Route path="customized" element={<Customized />} />
+          <Route path="shipping" element={<Shipping />} />
         </Route>
 
         <Route
@@ -72,11 +78,12 @@ function App() {
         /> */}
 
 
-        <Route path="/my-cart" element={<Cart />} />
+
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/product/images/:id" element={<ProductDetailImages />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
+      <Route path="/thank-you" element={<ThankYou />} />
       </Routes>
       <Toaster position="top-center" reverseOrder={false} />
     </>

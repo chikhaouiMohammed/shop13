@@ -1,25 +1,28 @@
-import { FiMenu } from 'react-icons/fi'
-import { useState } from 'react'
-import { IoClose, IoShareSocialOutline } from "react-icons/io5"
-import { AiOutlineProduct } from "react-icons/ai"
-import { GoTasklist } from "react-icons/go"
-import { MdOutlineShoppingBag } from "react-icons/md"
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { FiMenu } from 'react-icons/fi';
+import { useState } from 'react';
+import { IoShareSocialOutline, IoClose } from "react-icons/io5";
+import { GoTasklist } from "react-icons/go";
+import { MdOutlineShoppingBag } from "react-icons/md";
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+// Importing more specific icons for better UX
+import { FaBoxOpen, FaTags, FaCog, FaTruck, FaSignOutAlt, FaHome } from 'react-icons/fa';
+// Note: Shipping is a page, not a component used directly here in JSX, so its import is not strictly needed here for rendering.
+// import Shipping from './pages/Shipping'; // This import is not used in the JSX of Admin component itself
 
 const Admin = () => {
-    const [isMenu, setisMenu] = useState(false)
+    const [isMenu, setisMenu] = useState(false);
     let location = useLocation();
-    console.log(location)
-    const navigate = useNavigate()
-    const pathName = location.pathname
+    const navigate = useNavigate();
+    const pathName = location.pathname;
 
     // Function to toggle the menu
     const toggleMenu = () => {
-        setisMenu(!isMenu)
-    }
+        setisMenu(!isMenu);
+    };
 
     const today = new Date();
-    const formattedDate = today.toLocaleDateString("en-GB", {
+    // Format date for Arabic display
+    const formattedDate = today.toLocaleDateString("ar-DZ", {
         weekday: "long",
         day: "numeric",
         month: "long",
@@ -29,67 +32,183 @@ const Admin = () => {
     const handleLogout = () => {
         localStorage.removeItem('isAuthenticated');
         navigate('/admin-login');
-
-    }
+    };
 
     return (
-        <div className=''>
-            {/* menu */}
-            {
-                !isMenu && 
-                <div className='w-full flex justify-start items-center py-6 container mx-auto px-10'>
-                    <div onClick={toggleMenu} className='cursor-pointer transition-all duration-200 hover:text-gold'>
-                        <FiMenu style={{ width: '1.7rem', height: '1.7rem' }} />
-                    </div>
+        <div className='flex min-h-screen bg-gray-100 font-poppins rtl' dir="rtl">
+            {/* Menu Toggle Button (visible when sidebar is closed) */}
+            {!isMenu && (
+                <div className='fixed top-0 right-0 z-30 p-6 md:p-8'>
+                    <button
+                        onClick={toggleMenu}
+                        className='bg-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500'
+                        aria-label="فتح القائمة"
+                    >
+                        <FiMenu style={{ width: '1.7rem', height: '1.7rem', color: '#333' }} />
+                    </button>
                 </div>
-            }
-            
-            <div className='flex justify-between items-center'>
-                {/* sidebar */}
-                <div className={`w-[250px] z-20 text-darkGray px-8 py-10 bg-lightBeige h-screen transition-all duration-300 absolute  ${isMenu ? ' left-0 top-0 md:fixed' : ' -left-[250px] top-0'}`}>
-                    {/* Close icon */}
-                    <div className="cursor-pointer" onClick={toggleMenu}>
-                        <IoClose className="transition-all duration-300 hover:rotate-90 hover:text-gold" style={{ width: '1.7rem', height: '1.7rem' }} />
-                    </div>
-                    <div className="flex justify-between items-center w-full my-14">
-                        <h1 className="font-poppins text-xl md:text-2xl">My Dashboard</h1>
-                    </div>
-                    <ul className="w-full flex flex-col items-start justify-center gap-5 font-poppins text-lg">
-                        <Link onClick={() => setisMenu(false)} to='/admin' className={`cursor-pointer flex justify-start items-center gap-8 bg-gray-100 transition-all duration-200 ${ pathName === '/admin' ? ' bg-gold' : '' } hover:bg-gold w-full p-2 rounded-xl`}>
-                            <div><AiOutlineProduct style={{ width: '1.7rem', height: '1.7rem' }} /></div>
-                            <a href="">Products</a>
-                        </Link>
-                        <Link onClick={() => setisMenu(false)} to='/admin/orders' className={`cursor-pointer flex justify-start items-center gap-8 bg-gray-100 transition-all duration-200 ${ pathName === '/admin' ? ' bg-gold' : '' } hover:bg-gold w-full p-2 rounded-xl`}>
-                            <div><GoTasklist style={{ width: '1.7rem', height: '1.7rem' }} /></div>
-                            <a href="">Orders</a>
-                        </Link>
-                        <Link onClick={() => setisMenu(false)} to='/admin/social' className={`cursor-pointer flex justify-start items-center gap-8 bg-gray-100 transition-all duration-200 ${ pathName === '/admin' ? ' bg-gold' : '' } hover:bg-gold w-full p-2 rounded-xl`}>
-                            <div><IoShareSocialOutline style={{ width: '1.7rem', height: '1.7rem' }} /></div>
-                            <a href="">Social</a>
-                        </Link>
-                        <Link onClick={() => setisMenu(false)} to='/' className={`cursor-pointer flex justify-start items-center gap-8 bg-gray-100 transition-all duration-200 ${ pathName === '/admin' ? ' bg-gold' : '' } hover:bg-gold w-full p-2 rounded-xl`}>
-                            <div><MdOutlineShoppingBag style={{ width: '1.7rem', height: '1.7rem' }} /></div>
-                            <a href="">My Shop</a>
-                        </Link>
-                        <Link onClick={() => setisMenu(false)} to='/admin/categories-sizes' className={`cursor-pointer flex justify-start items-center gap-8 bg-gray-100 transition-all duration-200 ${ pathName === '/admin/categories-sizes' ? ' bg-gold' : '' } hover:bg-gold w-full p-2 rounded-xl`}>
-                            <div><AiOutlineProduct style={{ width: '1.7rem', height: '1.7rem' }} /></div>
-                            <a href="">Categories & Sizes</a>
-                        </Link>
-                        <botton onClick={handleLogout} className={`cursor-pointer flex justify-start items-center gap-8 bg-gray-100 transition-all duration-200 ${ pathName === '/admin' ? ' bg-gold' : '' } hover:bg-red-600 w-full p-2 rounded-xl`}>
-                            <div><MdOutlineShoppingBag style={{ width: '1.7rem', height: '1.7rem' }} /></div>
-                            <a href="">Logout</a>
-                        </botton>
-                    </ul>
-                </div>
-                {/* Content */}
-                <div className={` w-full ${ isMenu ? 'pt-[100px]' : '' }`}>
-                    {/* Actual date */}
-                    <p className=" w-full text-center text-xl font-medium">{formattedDate}</p>
-                    <Outlet/>
-                </div>
-                </div>
-        </div>
-    )
-} 
+            )}
 
-export default Admin
+            {/* Overlay for closing sidebar when clicking outside */}
+            {isMenu && (
+                <div
+                    className="fixed inset-0 z-20 bg-black bg-opacity-50 md:hidden" // Dark overlay on mobile
+                    onClick={toggleMenu}
+                    aria-label="إغلاق القائمة"
+                ></div>
+            )}
+
+            {/* Sidebar */}
+            <div className={`
+                fixed top-0 right-0 h-screen w-[280px] bg-white text-gray-800 shadow-2xl z-30
+                transform transition-transform duration-300 ease-in-out
+                ${isMenu ? 'translate-x-0' : 'translate-x-full'}
+                md:translate-x-0 md:static md:shadow-none md:border-r md:border-gray-200
+            `}>
+                {/* Close icon (visible on mobile when menu is open) */}
+                <div className="flex justify-start p-6 md:hidden">
+                    <button
+                        className="cursor-pointer text-gray-600 hover:text-red-500 transition-colors"
+                        onClick={toggleMenu}
+                        aria-label="إغلاق"
+                    >
+                        <IoClose style={{ width: '2rem', height: '2rem' }} />
+                    </button>
+                </div>
+
+                <div className="flex flex-col items-center py-10 border-b border-gray-200 mb-8">
+                    <h1 className="font-extrabold text-3xl text-gray-900">
+                        لوحة <span className="text-blue-600">التحكم</span>
+                    </h1>
+                </div>
+
+                <ul className="w-full flex flex-col items-start justify-center gap-2 px-6 text-lg">
+                    {/* Products Link */}
+                    <Link
+                        to='/admin'
+                        onClick={toggleMenu} // Close menu on click for mobile
+                        className={`
+                            flex items-center gap-5 w-full p-3 rounded-xl font-medium
+                            transition-all duration-200 hover:bg-blue-50 hover:text-blue-700
+                            ${pathName === '/admin' ? 'bg-blue-100 text-blue-700 font-semibold shadow-sm' : 'text-gray-700'}
+                        `}
+                    >
+                        <FaBoxOpen className="text-2xl" />
+                        المنتجات
+                    </Link>
+
+                    {/* Orders Link */}
+                    <Link
+                        to='/admin/orders'
+                        onClick={toggleMenu}
+                        className={`
+                            flex items-center gap-5 w-full p-3 rounded-xl font-medium
+                            transition-all duration-200 hover:bg-blue-50 hover:text-blue-700
+                            ${pathName.startsWith('/admin/orders') ? 'bg-blue-100 text-blue-700 font-semibold shadow-sm' : 'text-gray-700'}
+                        `}
+                    >
+                        <GoTasklist className="text-2xl" />
+                        الطلبات
+                    </Link>
+
+                    {/* Social Link */}
+                    <Link
+                        to='/admin/social'
+                        onClick={toggleMenu}
+                        className={`
+                            flex items-center gap-5 w-full p-3 rounded-xl font-medium
+                            transition-all duration-200 hover:bg-blue-50 hover:text-blue-700
+                            ${pathName === '/admin/social' ? 'bg-blue-100 text-blue-700 font-semibold shadow-sm' : 'text-gray-700'}
+                        `}
+                    >
+                        <IoShareSocialOutline className="text-2xl" />
+                        التواصل الاجتماعي
+                    </Link>
+
+                    {/* Categories & Sizes Link */}
+                    <Link
+                        to='/admin/categories-sizes'
+                        onClick={toggleMenu}
+                        className={`
+                            flex items-center gap-5 w-full p-3 rounded-xl font-medium
+                            transition-all duration-200 hover:bg-blue-50 hover:text-blue-700
+                            ${pathName === '/admin/categories-sizes' ? 'bg-blue-100 text-blue-700 font-semibold shadow-sm' : 'text-gray-700'}
+                        `}
+                    >
+                        <FaTags className="text-2xl" />
+                        الفئات والمقاسات
+                    </Link>
+
+                    {/* Customized Link (assuming it's a settings/config page) */}
+                    <Link
+                        to='/admin/customized'
+                        onClick={toggleMenu}
+                        className={`
+                            flex items-center gap-5 w-full p-3 rounded-xl font-medium
+                            transition-all duration-200 hover:bg-blue-50 hover:text-blue-700
+                            ${pathName === '/admin/customized' ? 'bg-blue-100 text-blue-700 font-semibold shadow-sm' : 'text-gray-700'}
+                        `}
+                    >
+                        <FaCog className="text-2xl" />
+                        الإعدادات المخصصة
+                    </Link>
+
+                    {/* Shipping Link */}
+                    <Link
+                        to='/admin/shipping'
+                        onClick={toggleMenu}
+                        className={`
+                            flex items-center gap-5 w-full p-3 rounded-xl font-medium
+                            transition-all duration-200 hover:bg-blue-50 hover:text-blue-700
+                            ${pathName === '/admin/shipping' ? 'bg-blue-100 text-blue-700 font-semibold shadow-sm' : 'text-gray-700'}
+                        `}
+                    >
+                        <FaTruck className="text-2xl" />
+                        الشحن والتوصيل
+                    </Link>
+
+                    {/* My Shop Link (link back to frontend) */}
+                    <Link
+                        to='/'
+                        onClick={toggleMenu}
+                        className={`
+                            flex items-center gap-5 w-full p-3 rounded-xl font-medium
+                            transition-all duration-200 hover:bg-blue-50 hover:text-blue-700
+                            text-gray-700
+                        `}
+                    >
+                        <FaHome className="text-2xl" />
+                        متجري
+                    </Link>
+
+                    {/* Logout Button */}
+                    <button
+                        onClick={handleLogout}
+                        className={`
+                            mt-8 flex items-center gap-5 w-full p-3 rounded-xl font-medium
+                            bg-red-500 text-white shadow-md
+                            transition-all duration-200 hover:bg-red-600 hover:scale-[1.02]
+                            focus:outline-none focus:ring-2 focus:ring-red-500
+                        `}
+                    >
+                        <FaSignOutAlt className="text-2xl" />
+                        تسجيل الخروج
+                    </button>
+                </ul>
+            </div>
+
+            {/* Content Area */}
+            <div className={`flex-grow p-6 md:p-8 transition-all duration-300 ease-in-out
+                ${isMenu ? 'md:ml-[280px]' : ''} `}
+            >
+                {/* Actual date */}
+                <p className="w-full text-left text-xl md:text-2xl font-medium text-gray-700 mb-8">
+                    {formattedDate}
+                </p>
+                <Outlet /> {/* Renders the child route component */}
+            </div>
+        </div>
+    );
+};
+
+export default Admin;

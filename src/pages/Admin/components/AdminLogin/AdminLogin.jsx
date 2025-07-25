@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminLogin.css';  // Import the CSS file
 import { db } from '../../../../Data/firebase';
-import { collection, where, getDocs, query } from 'firebase/firestore';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -15,27 +15,18 @@ function AdminLogin() {
     setError(null);  // Clear previous error messages
 
     try {
-      // Query Firestore to find the admin by email
-      const adminQuery = query(collection(db, 'admin'), where('email', '==', email));
-      const querySnapshot = await getDocs(adminQuery);
-
-      if (!querySnapshot.empty) {
-        const adminDoc = querySnapshot.docs[0];
-        const adminData = adminDoc.data();
-
-        // Check if the password matches
-        if (adminData.password === password) {
-          localStorage.setItem('isAuthenticated', 'true');
-          navigate('/admin');
-        } else {
-          setError('Invalid password');
-        }
-      } else {
-        setError('Admin not found');
-      }
+      const auth = getAuth();
+      await signInWithEmailAndPassword(auth, email, password);
+      localStorage.setItem('isAuthenticated', 'true');
+      navigate('/admin');
     } catch (err) {
-      console.error('Error logging in: ', err);
-      setError('Error logging in, please try again');
+      if (err.code === 'auth/user-not-found') {
+        setError('Admin not found');
+      } else if (err.code === 'auth/wrong-password') {
+        setError('Invalid password');
+      } else {
+        setError('Error logging in, please try again');
+      }
     }
   };
 
